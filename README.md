@@ -26,6 +26,11 @@ Usage
 
 Try typing `repo` really fast, on an unfamiliar keyboard.
 
+Demo
+----
+
+![gif](http://i.imgur.com/KeLYDEk.gif)
+
 Author and License
 ------------------
 
