@@ -1,20 +1,11 @@
-gti
-===
+rpeo
+====
 
-Just a silly `git` launcher, basically. Inspired by `sl`.
+Just a silly `repo` launcher, ~~inspired by~~ copied from `gti` (that was
+inspired by `sl`).
 
 Build and Install
 -----------------
-
-From a package system:
-* [Fedora](https://admin.fedoraproject.org/pkgdb/package/rpms/gti/)
-* it's in ArchLinux' AUR as [gti-git](https://aur.archlinux.org/packages/gti-git/) and as [gti](https://aur.archlinux.org/packages/gti/)
-* [Gentoo](https://packages.gentoo.org/packages/dev-vcs/gti)
-* [Nix/NixOS](https://github.com/NixOS/nixpkgs/pull/13453)
-* [FreeBSD ports](http://svnweb.freebsd.org/ports/head/games/gti/)
-* [OpenBSD ports](http://openports.se/games/gti)
-* [Homebrew/MacOS X](http://braumeister.org/formula/gti)
-* ([it's not in Debian yet](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=705850))
 
 From source:
 
@@ -26,15 +17,22 @@ The default install PREFIX is `/usr/bin`.
 You can change the speed of the car at compile time via a cpp-define.
 For example:
 
-    $ make CFLAGS=-DGTI_SPEED=100 # default is 50
+    $ make CFLAGS=-DROBOT_SPEED=100 # default is 500
+
+It works on GNU/Linux and it should work on Windows, I haven't tested it though.
 
 Usage
 -----
 
-Try typing `git` really fast, on an unfamiliar keyboard.
+Try typing `repo` really fast, on an unfamiliar keyboard.
 
 Author and License
 ------------------
+
+Copyright 2016 by Alvaro Moran <alvaro.moran@gmail.com>
+
+Note that 99% of the code has been actually taken from gti, so I feel obliged to
+leave the original copyright notice here.
 
 Copyright 2012 by Richard Wossal <richard@r-wos.org>
 

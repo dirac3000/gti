@@ -49,10 +49,15 @@
 #endif
 
 
-#define GIT_NAME "git"
+#define REPO_NAME "repo"
 
-#ifndef GTI_SPEED
-#define GTI_SPEED 50
+#define xstr(s) str(s)
+#define str(s) #s
+#define ROBOT_HEIGHT 7
+#define ROBOT_HEIGHT_STR xstr(ROBOT_HEIGHT)
+
+#ifndef ROBOT_SPEED
+#define ROBOT_SPEED 500
 #endif
 
 int  term_width(void);
@@ -60,8 +65,8 @@ void init_space(void);
 void open_term();
 void move_to_top(void);
 void line_at(int start_x, const char *s);
-void draw_car(int x);
-void clear_car(int x);
+void draw_robot(int x);
+void clear_robot(int x);
 
 int TERM_WIDTH;
 FILE *TERM_FH;
@@ -70,35 +75,33 @@ int SLEEP_DELAY;
 int main(int argc, char **argv)
 {
     int i;
-    char *git_path;
     (void) argc;
 
     open_term();
     TERM_WIDTH = term_width();
-    SLEEP_DELAY = 1000000 / (TERM_WIDTH + GTI_SPEED);
+    SLEEP_DELAY = 2000000 / (TERM_WIDTH + ROBOT_SPEED);
 
     init_space();
     for (i = -20; i < TERM_WIDTH; i++) {
-        draw_car(i);
+        draw_robot(i);
         usleep(SLEEP_DELAY);
-        clear_car(i);
+        clear_robot(i);
     }
     move_to_top();
     fflush(TERM_FH);
-    git_path = getenv("GIT");
-    if (git_path) {
-      execv(git_path, argv);
-    } else {
-      execvp(GIT_NAME, argv);
-    }
+    execvp(REPO_NAME, argv);
+
     /* error in exec if we land here */
-    perror(GIT_NAME);
+    perror(REPO_NAME);
     return 1;
 }
 
 void init_space(void)
 {
-    fputs("\n\n\n\n\n\n\n", TERM_FH); /* 8 lines, to not remove the PS1 line */
+    int i;
+    /* ROBOT_HEIGHT +1, do to not remove the PS1 line */
+    for (i = 0; i < ROBOT_HEIGHT + 1; i++)
+        fputs("\n", TERM_FH);
 #ifdef WIN32
     fflush(TERM_FH);
 #endif
@@ -122,7 +125,7 @@ int term_width(void)
 
 void move_to_top(void)
 {
-    fprintf(TERM_FH, "\033[7A");
+    fprintf(TERM_FH, "\033[" ROBOT_HEIGHT_STR "A");
 }
 
 void move_to_x(int x)
@@ -152,7 +155,7 @@ void move_to_top(void)
     CONSOLE_SCREEN_BUFFER_INFO ci;
     GetConsoleScreenBufferInfo(con, &ci);
     ci.dwCursorPosition.X = 0;
-    ci.dwCursorPosition.Y -= 7;
+    ci.dwCursorPosition.Y -= ROBOT_HEIGHT;
     SetConsoleCursorPosition(con, ci.dwCursorPosition);
 }
 
@@ -185,39 +188,30 @@ void line_at(int start_x, const char *s)
     if (x < TERM_WIDTH)
 #endif
     fputc('\n', TERM_FH);
-    
+
 #ifdef WIN32
     fflush(TERM_FH);
 #endif
 }
 
-void draw_car(int x)
+void draw_robot(int x)
 {
     move_to_top();
-    line_at(x, "   ,---------------.");
-    line_at(x, "  /  /``````|``````\\\\");
-    line_at(x, " /  /_______|_______\\\\________");
-    line_at(x, "|]      GTI |'       |        |]");
-    if (x % 2) {
-    line_at(x, "=  .-:-.    |________|  .-:-.  =");
-    line_at(x, " `  -+-  --------------  -+-  '");
-    line_at(x, "   '-:-'                '-:-'  ");
-    } else {
-    line_at(x, "=  .:-:.    |________|  .:-:.  =");
-    line_at(x, " `   X   --------------   X   '");
-    line_at(x, "   ':-:'                ':-:'  ");
-    }
+    line_at(x, " ,-----.");
+    line_at(x, ",       .");
+    line_at(x, "|___* *__|");
+    line_at(x, "|        |");
+    line_at(x, "| /|     |");
+    line_at(x, "|/ |     |");
+    line_at(x, "/()|_____|");
 }
 
-void clear_car(int x)
+void clear_robot(int x)
 {
+    int i;
+
     move_to_top();
-    line_at(x, "  ");
-    line_at(x, "  ");
-    line_at(x, "  ");
-    line_at(x, "  ");
-    line_at(x, "  ");
-    line_at(x, "  ");
-    line_at(x, "  ");
+    for (i = 0; i < ROBOT_HEIGHT; i++)
+        line_at(x, "  ");
 }
 

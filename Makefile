@@ -18,15 +18,15 @@ else
   endif
 endif
 
-PROG=gti$X
-MANPAGE=gti.6.gz
+PROG=rpeo$X
+MANPAGE=rpeo.6.gz
 
 $(PROG): *.c
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $^
 	-$(STRIP) -s $@
 
-$(MANPAGE): gti.6
-	gzip -9 -n -c gti.6 > gti.6.gz
+$(MANPAGE): rpeo.6
+	gzip -9 -n -c rpeo.6 > rpeo.6.gz
 
 install: $(PROG) $(MANPAGE)
 	$(INSTALL) $(PROG) $(BINDIR)/$(PROG)
@@ -37,6 +37,9 @@ uninstall:
 	rm -f $(MANDIR)/$(MANPAGE)
 
 .PHONY: clean install uninstall
+
+all: $(PROG)
+
 clean:
 	rm -f $(PROG)
 	rm -f $(MANPAGE)
